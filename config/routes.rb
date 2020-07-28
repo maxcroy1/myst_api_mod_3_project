@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  resources :order_items
+  resources :follows
+  resources :orders
+  resources :desired_games
   resources :user_games
   resources :games
   resources :users

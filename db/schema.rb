@@ -10,16 +10,58 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_28_144558) do
+ActiveRecord::Schema.define(version: 2020_07_28_171105) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "desired_games", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "game_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["game_id"], name: "index_desired_games_on_game_id"
+    t.index ["user_id"], name: "index_desired_games_on_user_id"
+  end
+
+  create_table "follows", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.integer "friend_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_follows_on_user_id"
+  end
 
   create_table "games", force: :cascade do |t|
     t.string "name"
     t.integer "api_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "order_items", force: :cascade do |t|
+    t.bigint "order_id", null: false
+    t.bigint "game_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["game_id"], name: "index_order_items_on_game_id"
+    t.index ["order_id"], name: "index_order_items_on_order_id"
+  end
+
+  create_table "orders", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "address_one"
+    t.string "address_two"
+    t.string "city"
+    t.string "state"
+    t.string "country"
+    t.string "zipcode"
+    t.string "credit_holder"
+    t.string "credit_number"
+    t.string "credit_cvc"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_orders_on_user_id"
   end
 
   create_table "user_games", force: :cascade do |t|
@@ -40,6 +82,12 @@ ActiveRecord::Schema.define(version: 2020_07_28_144558) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  add_foreign_key "desired_games", "games"
+  add_foreign_key "desired_games", "users"
+  add_foreign_key "follows", "users"
+  add_foreign_key "order_items", "games"
+  add_foreign_key "order_items", "orders"
+  add_foreign_key "orders", "users"
   add_foreign_key "user_games", "games"
   add_foreign_key "user_games", "users"
 end

@@ -1,0 +1,2 @@
+class DesiredGamesController < ApplicationController
+end
