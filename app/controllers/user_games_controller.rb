@@ -1,7 +1,20 @@
 class UserGamesController < ApplicationController
+
+    def index
+        user_games = UserGame.all
+        render json: user_games
+    end
+
     def create
         user_game = UserGame.create(user_game_params)
         render json: user_game
+    end
+
+    def destroy
+        user_game = UserGame.find_by(params[:id])
+        user_game.destroy 
+
+        render json: {message: 'sucessfully destroyed'}
     end
 
     private
