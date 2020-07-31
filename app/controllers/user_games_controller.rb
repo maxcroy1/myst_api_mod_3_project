@@ -11,7 +11,7 @@ class UserGamesController < ApplicationController
     end
 
     def destroy
-        user_game = UserGame.find_by(params[:id])
+        user_game = UserGame.find_by(id: params[:id])
         user_game.destroy 
 
         render json: {message: 'sucessfully destroyed'}
